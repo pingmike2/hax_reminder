@@ -63,6 +63,8 @@ jobs:
 
       # 清理旧 run 记录，只保留本 workflow 最新 1 条
       - name: Clean up old workflow runs
+        env:
+          GH_TOKEN: ${{ github.token }}  # 内置 token，已声明 actions:write
         run: |
           # 本 workflow 的所有 completed run id（含本次，最新在前）
           older_ids=$(gh api "repos/${{ github.repository }}/actions/runs?workflow_file=main.yml&per_page=100" \

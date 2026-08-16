@@ -71,5 +71,6 @@ jobs:
             --jq '[.workflow_runs[] | select(.status == "completed") | .id] | .[1:][]')
           for id in $older_ids; do
             echo "删除旧 run: $id"
-            gh run delete "$id" --repo "${{ github.repository }}" --yes || echo "删除失败(跳过): $id"
+            # gh run delete 无 --yes 标志（非交互环境直接删）；加了反而 unknown flag 失败
+            gh run delete "$id" --repo "${{ github.repository }}" || echo "删除失败(跳过): $id"
           done
